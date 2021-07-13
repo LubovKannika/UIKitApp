@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var slider: UISlider!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +36,11 @@ class ViewController: UIViewController {
         slider.thumbTintColor = .blue
         
         mainLabel.text = String(slider.value)
+        
+//        datePicker.locale = Locale.current
+        
+        datePicker.locale = Locale(identifier: "ru_RU")
+        
     }
 
    
@@ -55,5 +62,39 @@ class ViewController: UIViewController {
         mainLabel.text = String(slider.value)
         let sliderValue = CGFloat(slider.value)
         view.backgroundColor = view.backgroundColor?.withAlphaComponent(sliderValue)
+    }
+    @IBAction func doneButtonPressed() {
+        guard let inputText = textField.text, !inputText.isEmpty else {
+           showAlert(title: "Text field is empty", message: "Please enter your name")
+            return
+        }
+        if let _ = Double(inputText) {
+            showAlert(title: "Wrong format", message: "Please enter your name")
+            return
+        }
+        
+        mainLabel.text = inputText
+        textField.text = ""
+    }
+    @IBAction func datePickerAction() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        
+        mainLabel.text = dateFormatter.string(from: datePicker.date)
+    }
+}
+
+// MARK: - Privat Methods
+
+extension ViewController {
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            self.textField.text = ""
+        }
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
 }
