@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     
+    @IBOutlet weak var assButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,7 +64,10 @@ class ViewController: UIViewController {
         let sliderValue = CGFloat(slider.value)
         view.backgroundColor = view.backgroundColor?.withAlphaComponent(sliderValue)
     }
+    
+    
     @IBAction func doneButtonPressed() {
+    
         guard let inputText = textField.text, !inputText.isEmpty else {
            showAlert(title: "Text field is empty", message: "Please enter your name")
             return
@@ -74,8 +78,10 @@ class ViewController: UIViewController {
         }
         
         mainLabel.text = inputText
+        assButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
         textField.text = ""
     }
+    
     @IBAction func datePickerAction() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
